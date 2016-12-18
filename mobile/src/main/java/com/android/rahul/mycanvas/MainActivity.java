@@ -6,10 +6,14 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
     Button mBtnDown;
 
     String TAG = MainActivity.class.getSimpleName();
+    int height,width;
 
     @OnClick({R.id.btn_up, R.id.btn_left, R.id.btn_right, R.id.btn_down,R.id.btn_start})
     public void onClick(View view) {
@@ -65,14 +70,49 @@ public class MainActivity extends AppCompatActivity{
     {
         MyView.isGameStarted = true;
         MyView.isNewGame = true;
-        MyView.scale = 100;
-        MyView.col = (int)mView.getWidth()/MyView.scale;
-        MyView.rows = (int)mView.getHeight()/MyView.scale;
-
+        getRowsAndCols();
         MyView.food.left = MyView.food.scale * new Random().nextInt(MyView.col+1);
         MyView.food.top = MyView.food.scale * new Random().nextInt(MyView.rows+1);
+        mView.draw(new Canvas(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)));
+    }
 
-        mView.draw(new Canvas(Bitmap.createBitmap(mView.getWidth(), mView.getHeight(), Bitmap.Config.ARGB_8888)));
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        getRowsAndCols();
+//    }
+
+    void getRowsAndCols()
+    {
+        String w = Integer.toString((int)mView.getWidth());
+        String h = Integer.toString((int)mView.getHeight());
+
+
+        char c[] = w.toCharArray();
+        c[c.length-1] = '0';
+        c[c.length-2] = '0';
+        w = "";
+        for(int i=0;i<c.length;++i)
+        {
+            w = w +c[i];
+        }
+
+
+        c = h.toCharArray();
+        c[c.length-1] = '0';
+        c[c.length-2] = '0';
+
+        h = "";
+        for(int i=0;i<c.length;++i)
+        {
+            h = h +c[i];
+        }
+        height = Integer.parseInt(h);
+        width = Integer.parseInt(w);
+
+        MyView.col = Integer.parseInt(w)/MyView.scale;
+        MyView.rows = Integer.parseInt(h)/MyView.scale;
+
     }
 
     @Override
@@ -80,6 +120,18 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+//        getRowsAndCols();
+//        mView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                mView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//                getRowsAndCols();
+//            }
+//        });
+//
+//
+//        mView.setLayoutParams(new LinearLayout.LayoutParams(width,height));
+
     }
 
 

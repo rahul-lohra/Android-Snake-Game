@@ -28,7 +28,7 @@ public class MyView extends View {
     Rect snakeReact,foodReact;
     MainActivity mainActivity;
     public static boolean isGameStarted = false,isNewGame = false;
-    public static int col,rows,scale;
+    public static int col,rows,scale = 100;
     public static Thread thread;
     void init() {
         snake = new Snake();
@@ -123,33 +123,33 @@ public class MyView extends View {
         }
     }
 
-    void sleepForAWhile()
+    private void sleepForAWhile()
     {
 
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    invalidate();
-//                }
-//            },500);
-
-
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    sleepForAWhile();
-                    Thread.sleep(500);
-                    postInvalidate();
-//                        createSnakeTail();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    invalidate();
                 }
-            }
-        });
-        if(!thread.isAlive())
-            thread.start();
+            },500);
+
+
+//        thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    sleepForAWhile();
+//                    Thread.sleep(500);
+//                    postInvalidate();
+////                        createSnakeTail();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//        if(!thread.isAlive())
+//            thread.start();
     }
 
 
